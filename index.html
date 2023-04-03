@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>QR Code Scanner</title>
+    <script src="https://cdn.jsdelivr.net/npm/qr-scanner/build/qr-scanner.min.js"></script>
+  </head>
+  <body>
+    <video id="qr-video" width="300" height="200" style="display:none;"></video>
+    <canvas id="qr-canvas" width="300" height="200"></canvas>
+    <div id="output"></div>
+    <script>
+      const video = document.getElementById('qr-video');
+      const canvas = document.getElementById('qr-canvas');
+      const output = document.getElementById('output');
+      
+      // Initialize QR scanner
+      const scanner = new QrScanner(video, result => {
+        output.textContent = result;
+        scanner.stop();
+      });
+
+      // Start scanning
+      QrScanner.hasCamera().then(hasCamera => {
+        if (hasCamera) {
+          QrScanner.listCameras().then(cameras => {
+            scanner.start(cameras[0]);
+          });
+        } else {
+          console.error('No camera found.');
+        }
+      });
+    </script>
+  </body>
+</html>
